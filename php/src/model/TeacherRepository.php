@@ -32,11 +32,11 @@ class TeacherRepository
 
     public function getOneTeacher(int $id) {
         $result = $this->db->select("
-    SELECT p.id, p.name, t.can_assist, ts.id_subject FROM `teacher` t 
-    JOIN `person` p ON p.id = t.id_person
-    JOIN `teacher_subject` ts ON ts.id_teacher = p.id
-    WHERE p.id = $id
-    ");
+        SELECT p.id, p.name, t.can_assist, ts.id_subject FROM `teacher` t 
+        JOIN `person` p ON p.id = t.id_person
+        JOIN `teacher_subject` ts ON ts.id_teacher = p.id
+        WHERE p.id = $id
+        ");
         if (count($result) < 1) {
             throw new \Exception("Объект не найден");
         }
