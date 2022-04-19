@@ -10,6 +10,9 @@ use Slim\Factory\AppFactory;
 require __DIR__ . '/vendor/autoload.php';
 
 $app = AppFactory::create();
+$app->addBodyParsingMiddleware();
+$app->addErrorMiddleware(false, false, false);
+
 $db = new Database();
 
 $teacherController = new TeacherController($app, new Teacher($db));
