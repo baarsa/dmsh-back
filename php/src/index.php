@@ -1,9 +1,11 @@
 <?php
 
 use Controller\ExtraEmploymentController;
+use Controller\GroupController;
 use Controller\TeacherController;
 use Model\Database;
 use Model\ExtraEmploymentRepository;
+use Model\GroupRepository;
 use Model\TeacherRepository;
 use Slim\Factory\AppFactory;
 
@@ -17,5 +19,6 @@ $db = new Database();
 
 $teacherController = new TeacherController($app, new TeacherRepository($db));
 $extraEmploymentController = new ExtraEmploymentController($app, new ExtraEmploymentRepository($db));
+$groupController = new GroupController($app, new GroupRepository($db));
 
 $app->run();

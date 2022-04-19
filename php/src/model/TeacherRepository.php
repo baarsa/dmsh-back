@@ -11,10 +11,10 @@ class TeacherRepository
 
     public function getAllTeachers() {
         $result = $this->db->select("
-    SELECT p.id, p.name, t.can_assist, ts.id_subject FROM `teacher` t 
-    JOIN `person` p ON p.id = t.id_person
-    JOIN `teacher_subject` ts ON ts.id_teacher = p.id
-    ");
+        SELECT p.id, p.name, t.can_assist, ts.id_subject FROM `teacher` t 
+        JOIN `person` p ON p.id = t.id_person
+        JOIN `teacher_subject` ts ON ts.id_teacher = p.id
+        ");
         return array_values(array_reduce($result, function($acc, $item) {
             if (!array_key_exists($item['id'], $acc)) {
                 $acc[$item['id']] = [
@@ -51,6 +51,7 @@ class TeacherRepository
     }
 
     public function deleteTeacher(int $id) {
+        // todo delete connections
         $this->db->executeStatement("
         DELETE FROM `teacher` WHERE `id` = $id
         ");
