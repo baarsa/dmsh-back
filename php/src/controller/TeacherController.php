@@ -2,13 +2,13 @@
 
 namespace Controller;
 
-use Model\Teacher;
+use Model\TeacherRepository;
 use Slim\App;
 
 class TeacherController extends Controller
 {
     protected static string $RESOURCE_NAME = "teacher";
-    private readonly Teacher $teacher;
+    private readonly TeacherRepository $teacher;
 
     public function getAll(): array
     {
@@ -35,7 +35,7 @@ class TeacherController extends Controller
         return $this->teacher->updateTeacher($id, $data);
     }
 
-    public function __construct(App $app, Teacher $teacher)
+    public function __construct(App $app, TeacherRepository $teacher)
     {
         parent::__construct($app);
         $this->teacher = $teacher;

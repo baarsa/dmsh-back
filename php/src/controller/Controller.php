@@ -21,21 +21,22 @@ abstract class Controller
             $response->getBody()->write(json_encode($this->getAll()));
             return $response;
         });
-        $app->get(static::$RESOURCE_NAME . "/{id}", function (Request $request, Response $response, $args) {
+        $app->get("/" . static::$RESOURCE_NAME . "/{id}", function (Request $request, Response $response, $args) {
             $resource_id = (int)$args['id'];
             $response->getBody()->write(json_encode($this->getOne($resource_id)));
             return $response;
         });
-        $app->post(static::$RESOURCE_NAME, function (Request $request, Response $response) {
-            $this->create($request->getParsedBody());
+        $app->post("/" . static::$RESOURCE_NAME, function (Request $request, Response $response) {
+            $new_id = $this->create($request->getParsedBody());
+            $response->getBody()->write($new_id);
             return $response;
         });
-        $app->post(static::$RESOURCE_NAME . "/{id}", function (Request $request, Response $response, $args) {
+        $app->post("/" . static::$RESOURCE_NAME . "/{id}", function (Request $request, Response $response, $args) {
             $resource_id = (int)$args['id'];
             $this->update($resource_id, $request->getParsedBody());
             return $response;
         });
-        $app->delete(static::$RESOURCE_NAME . "/{id}", function (Request $request, Response $response, $args) {
+        $app->delete("/" . static::$RESOURCE_NAME . "/{id}", function (Request $request, Response $response, $args) {
             $resource_id = (int)$args['id'];
             $this->delete($resource_id);
             return $response;

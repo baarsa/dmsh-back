@@ -34,7 +34,7 @@ class Database
         }
     }
 
-    private function executeStatement($query = "" , $params = []): \mysqli_stmt
+    public function executeStatement($query = "" , $params = []): \mysqli_stmt
     {
         try {
             $stmt = $this->connection->prepare( $query );
@@ -51,7 +51,12 @@ class Database
 
             return $stmt;
         } catch(Exception $e) {
-            throw New Exception( $e->getMessage() );
+            throw new Exception( $e->getMessage() );
         }
+    }
+
+    public function lastId(): int
+    {
+        return $this->connection->insert_id;
     }
 }

@@ -2,7 +2,7 @@
 
 use Controller\TeacherController;
 use Model\Database;
-use Model\Teacher;
+use Model\TeacherRepository;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Factory\AppFactory;
@@ -15,7 +15,7 @@ $app->addErrorMiddleware(false, false, false);
 
 $db = new Database();
 
-$teacherController = new TeacherController($app, new Teacher($db));
+$teacherController = new TeacherController($app, new TeacherRepository($db));
 
 $app->get('/', function (Request $request, Response $response, $args) {
     $response->getBody()->write("Hello worlda!");
