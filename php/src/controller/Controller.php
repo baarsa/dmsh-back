@@ -28,7 +28,7 @@ abstract class Controller
         });
         $app->post("/" . static::$RESOURCE_NAME, function (Request $request, Response $response) {
             $new_id = $this->create($request->getParsedBody());
-            $response->getBody()->write($new_id);
+            $response->getBody()->write(strval($new_id));
             return $response;
         });
         $app->post("/" . static::$RESOURCE_NAME . "/{id}", function (Request $request, Response $response, $args) {
