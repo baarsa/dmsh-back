@@ -2,7 +2,6 @@
 namespace Model;
 class TeacherRepository
 {
-
     private Database $db;
 
     public function __construct(Database $db) {

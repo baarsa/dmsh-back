@@ -59,4 +59,12 @@ class Database
     {
         return $this->connection->insert_id;
     }
+
+    public function getIds($query): array
+    {
+        $result = $this->select($query);
+        return array_map(function ($item) {
+            return $item['id'];
+        }, $result);
+    }
 }
