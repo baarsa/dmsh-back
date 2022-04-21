@@ -10,6 +10,7 @@ use Controller\ScheduleController;
 use Controller\SpecialityGroupController;
 use Controller\SubjectController;
 use Controller\TeacherController;
+use Controller\UserController;
 use Model\Database;
 use Model\ExtraEmploymentRepository;
 use Model\GroupRepository;
@@ -21,6 +22,7 @@ use Model\ScheduleRepository;
 use Model\SpecialityGroupRepository;
 use Model\SubjectRepository;
 use Model\TeacherRepository;
+use Model\UserRepository;
 use Slim\Factory\AppFactory;
 
 require __DIR__ . '/vendor/autoload.php';
@@ -41,5 +43,6 @@ $pupilController = new PupilController($app, new PupilRepository($db));
 $scheduleController = new ScheduleController($app, new ScheduleRepository($db));
 $specialityGroupController = new SpecialityGroupController($app, new SpecialityGroupRepository($db));
 $subjectController = new SubjectController($app, new SubjectRepository($db));
+$userController = new UserController($app, new UserRepository($db));
 
 $app->run();
