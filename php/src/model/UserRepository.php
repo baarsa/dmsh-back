@@ -20,7 +20,7 @@ class UserRepository
                 'name' => $item['name'],
                 'login' => $item['login'],
                 'password' => $item['password'],
-                'roles' => json_decode($item['roles']), // decode??
+                'roles' => json_decode($item['roles']),
                 'teacherId' => $item['id_teacher'],
             ];
         }, $result);
@@ -39,7 +39,7 @@ class UserRepository
             'name' => $result[0]['name'],
             'login' => $result[0]['login'],
             'password' => $result[0]['password'],
-            'roles' => json_decode($result[0]['roles']), // decode??
+            'roles' => json_decode($result[0]['roles']),
             'teacherId' => $result[0]['id_teacher'],
         ];
     }

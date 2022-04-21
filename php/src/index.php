@@ -1,5 +1,6 @@
 <?php
 
+use Controller\AuthController;
 use Controller\ExtraEmploymentController;
 use Controller\GroupController;
 use Controller\LessonController;
@@ -11,6 +12,7 @@ use Controller\SpecialityGroupController;
 use Controller\SubjectController;
 use Controller\TeacherController;
 use Controller\UserController;
+use Model\AuthManager;
 use Model\Database;
 use Model\ExtraEmploymentRepository;
 use Model\GroupRepository;
@@ -26,6 +28,8 @@ use Model\UserRepository;
 use Slim\Factory\AppFactory;
 
 require __DIR__ . '/vendor/autoload.php';
+
+session_start();
 
 $app = AppFactory::create();
 $app->addBodyParsingMiddleware();
@@ -44,5 +48,6 @@ $scheduleController = new ScheduleController($app, new ScheduleRepository($db));
 $specialityGroupController = new SpecialityGroupController($app, new SpecialityGroupRepository($db));
 $subjectController = new SubjectController($app, new SubjectRepository($db));
 $userController = new UserController($app, new UserRepository($db));
+$authController = new AuthController($app, new AuthManager($db));
 
 $app->run();
