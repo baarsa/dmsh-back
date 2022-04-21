@@ -5,6 +5,7 @@ use Controller\GroupController;
 use Controller\LessonController;
 use Controller\LoadController;
 use Controller\ProgramController;
+use Controller\PupilController;
 use Controller\TeacherController;
 use Model\Database;
 use Model\ExtraEmploymentRepository;
@@ -12,6 +13,7 @@ use Model\GroupRepository;
 use Model\LessonRepository;
 use Model\LoadRepository;
 use Model\ProgramRepository;
+use Model\PupilRepository;
 use Model\TeacherRepository;
 use Slim\Factory\AppFactory;
 
@@ -29,5 +31,6 @@ $groupController = new GroupController($app, new GroupRepository($db));
 $lessonController = new LessonController($app, new LessonRepository($db));
 $loadController = new LoadController($app, new LoadRepository($db));
 $programController = new ProgramController($app, new ProgramRepository($db));
+$pupilController = new PupilController($app, new PupilRepository($db));
 
 $app->run();
