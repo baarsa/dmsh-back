@@ -7,6 +7,7 @@ use Controller\LoadController;
 use Controller\ProgramController;
 use Controller\PupilController;
 use Controller\ScheduleController;
+use Controller\SpecialityGroupController;
 use Controller\TeacherController;
 use Model\Database;
 use Model\ExtraEmploymentRepository;
@@ -16,6 +17,7 @@ use Model\LoadRepository;
 use Model\ProgramRepository;
 use Model\PupilRepository;
 use Model\ScheduleRepository;
+use Model\SpecialityGroupRepository;
 use Model\TeacherRepository;
 use Slim\Factory\AppFactory;
 
@@ -35,5 +37,6 @@ $loadController = new LoadController($app, new LoadRepository($db));
 $programController = new ProgramController($app, new ProgramRepository($db));
 $pupilController = new PupilController($app, new PupilRepository($db));
 $scheduleController = new ScheduleController($app, new ScheduleRepository($db));
+$specialityGroupController = new SpecialityGroupController($app, new SpecialityGroupRepository($db));
 
 $app->run();
