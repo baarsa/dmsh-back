@@ -3,6 +3,7 @@
 use Controller\AuthController;
 use Controller\ExtraEmploymentController;
 use Controller\GroupController;
+use Controller\FrontController;
 use Controller\LessonController;
 use Controller\LoadController;
 use Controller\ProgramController;
@@ -49,5 +50,6 @@ $specialityGroupController = new SpecialityGroupController($app, new SpecialityG
 $subjectController = new SubjectController($app, new SubjectRepository($db));
 $userController = new UserController($app, new UserRepository($db));
 $authController = new AuthController($app, new AuthManager($db));
+$frontController = new FrontController($app);
 
 $app->run();

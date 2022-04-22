@@ -12,8 +12,14 @@ services:
       - ./php/src/.htaccess:/var/www/html/.htaccess
     ports:
       - 8000:80
+    networks:
+      - dmsh-network
   composer:
     image: composer:1.9
     command: [ "composer", "update" ]
     volumes:
       - ./php/src:/app
+networks:
+  dmsh-network:
+    name: dmsh-network
+    driver: bridge

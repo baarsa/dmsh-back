@@ -17,26 +17,26 @@ abstract class Controller
     abstract function update(int $id, array $data);
 
     public function __construct(App $app) {
-        $app->get("/" . static::$RESOURCE_NAME . "/all", function (Request $request, Response $response) {
+        $app->get("/api/" . static::$RESOURCE_NAME . "/all", function (Request $request, Response $response) {
             $response->getBody()->write(json_encode($this->getAll()));
             return $response;
         });
-        $app->get("/" . static::$RESOURCE_NAME . "/{id}", function (Request $request, Response $response, $args) {
+        $app->get("/api/" . static::$RESOURCE_NAME . "/{id}", function (Request $request, Response $response, $args) {
             $resource_id = (int)$args['id'];
             $response->getBody()->write(json_encode($this->getOne($resource_id)));
             return $response;
         });
-        $app->post("/" . static::$RESOURCE_NAME, function (Request $request, Response $response) {
+        $app->post("/api/" . static::$RESOURCE_NAME, function (Request $request, Response $response) {
             $new_id = $this->create($request->getParsedBody());
             $response->getBody()->write(strval($new_id));
             return $response;
         });
-        $app->post("/" . static::$RESOURCE_NAME . "/{id}", function (Request $request, Response $response, $args) {
+        $app->post("/api/" . static::$RESOURCE_NAME . "/{id}", function (Request $request, Response $response, $args) {
             $resource_id = (int)$args['id'];
             $this->update($resource_id, $request->getParsedBody());
             return $response;
         });
-        $app->delete("/" . static::$RESOURCE_NAME . "/{id}", function (Request $request, Response $response, $args) {
+        $app->delete("/api/" . static::$RESOURCE_NAME . "/{id}", function (Request $request, Response $response, $args) {
             $resource_id = (int)$args['id'];
             $this->delete($resource_id);
             return $response;
