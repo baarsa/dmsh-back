@@ -64,7 +64,7 @@ class GroupRepository
         ");
     }
 
-    public function updateGroup(int $id, array $data) {
+    public function updateGroup(int $id, array $data): array {
         $this->db->executeStatement("
         UPDATE `learning_group`
         SET `name` = \"{$data['name']}\"
@@ -78,9 +78,10 @@ class GroupRepository
         INSERT INTO `pupil_learning_group` (`id_learning_group`, `id_pupil`) 
         VALUES $values_string
         ");
+        return $this->getOneGroup($id);
     }
 
-    public function createGroup(array $data): int {
+    public function createGroup(array $data): array {
         $this->db->executeStatement("
         INSERT INTO `lesson_taker` () VALUES ()
         ");
@@ -97,6 +98,6 @@ class GroupRepository
         INSERT INTO `pupil_learning_group` (`id_learning_group`, `id_pupil`) 
         VALUES $values_string
         ");
-        return $new_id;
+        return $this->getOneGroup($new_id);
     }
 }

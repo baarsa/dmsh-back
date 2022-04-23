@@ -50,7 +50,7 @@ class SubjectRepository
         ");
     }
 
-    public function updateSubject(int $id, array $data) {
+    public function updateSubject(int $id, array $data): array {
         //todo transactions
         $this->db->executeStatement("
         UPDATE `subject`
@@ -63,9 +63,10 @@ class SubjectRepository
             INSERT INTO `special_subject` (`id_subject`, `id_speciality_group`) VALUES ($id, {$data['specialityGroup']})
             ");
         }
+        return $this->getOneSubject($id);
     }
 
-    public function createSubject(array $data): int {
+    public function createSubject(array $data): array {
         $this->db->executeStatement("
         INSERT INTO `subject` (`name`) VALUES (\"{$data['name']}\")
         ");
@@ -75,6 +76,6 @@ class SubjectRepository
             INSERT INTO `special_subject` (`id_subject`, `id_speciality_group`) VALUES ($new_id, {$data['specialityGroup']})
         ");
         }
-        return $new_id;
+        return $this->getOneSubject($new_id);
     }
 }

@@ -96,7 +96,7 @@ class ProgramRepository
         ");
     }
 
-    public function updateProgram(int $id, array $data) {
+    public function updateProgram(int $id, array $data): array {
         //todo transactions
         $this->db->executeStatement("
         UPDATE `program`
@@ -105,14 +105,15 @@ class ProgramRepository
         ");
         $this->db->executeStatement("DELETE FROM `year_plan` WHERE `id_program` = $id");
         $this->createYearPlans($id, $data['yearPlans']);
+        return $this->getOneProgram($id);
     }
 
-    public function createProgram(array $data): int {
+    public function createProgram(array $data): array {
         $this->db->executeStatement("
         INSERT INTO `program` (`name`, `id_speciality_group`) VALUES (\"{$data['name']}\", {$data['specialityGroup']})
         ");
         $new_program_id = $this->db->lastId();
         $this->createYearPlans($new_program_id, $data['yearPlans']);
-        return $new_program_id;
+        return $this->getOneProgram($new_program_id);
     }
 }

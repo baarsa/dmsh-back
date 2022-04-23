@@ -50,7 +50,7 @@ class PupilRepository
         ");
     }
 
-    public function updatePupil(int $id, array $data) {
+    public function updatePupil(int $id, array $data): array {
         //todo transactions
         $this->db->executeStatement("
         UPDATE `person`
@@ -62,9 +62,10 @@ class PupilRepository
         SET `id_program` = {$data['program']}, `id_special_subject` = {$data['specialSubject']}
         WHERE `id_person` = $id
         ");
+        return $this->getOnePupil($id);
     }
 
-    public function createPupil(array $data): int {
+    public function createPupil(array $data): array {
         $this->db->executeStatement("
         INSERT INTO `person` (`name`) VALUES (\"{$data['name']}\")
         ");
@@ -77,6 +78,6 @@ class PupilRepository
         INSERT INTO `pupil` (`id_person`, `id_lesson_taker`, `id_program`, `id_special_subject`)
         VALUES ($new_id, $new_lesson_taker_id, {$data['program']}, {$data['specialSubject']})
         ");
-        return $new_id;
+        return $this->getOnePupil($new_id);
     }
 }

@@ -56,7 +56,7 @@ class TeacherRepository
         ");
     }
 
-    public function updateTeacher(int $id, array $data) {
+    public function updateTeacher(int $id, array $data): array {
         //todo transactions
         $this->db->executeStatement("
         UPDATE `person`
@@ -76,9 +76,10 @@ class TeacherRepository
         INSERT INTO `teacher_subject` (`id_teacher`, `id_subject`) 
         VALUES $values_string
         ");
+        return $this->getOneTeacher($id);
     }
 
-    public function createTeacher(array $data): int {
+    public function createTeacher(array $data): array {
         $this->db->executeStatement("
         INSERT INTO `person` (`name`) VALUES (\"{$data['name']}\")
         ");
@@ -95,6 +96,6 @@ class TeacherRepository
         INSERT INTO `teacher_subject` (`id_teacher`, `id_subject`) 
         VALUES $values_string
         ");
-        return $new_id;
+        return $this->getOneTeacher($new_id);
     }
 }

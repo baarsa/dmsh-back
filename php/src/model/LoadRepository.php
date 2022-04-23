@@ -50,7 +50,7 @@ class LoadRepository
         ");
     }
 
-    public function updateLoad(int $id, array $data) {
+    public function updateLoad(int $id, array $data): array {
         $set_values = [];
         if (isset($data['schedule'])) {
             $set_values[] = "`id_schedule` = {$data['schedule']}";
@@ -72,14 +72,15 @@ class LoadRepository
             WHERE `id` = $id
             ");
         }
+        return $this->getOneLoad($id);
     }
 
-    public function createLoad(array $data): int {
+    public function createLoad(array $data): array {
         $this->db->executeStatement("
         INSERT INTO `load` (`id_schedule`, `id_pupil`, `id_teacher`, `id_subject`) 
         VALUES ({$data['schedule']}, {$data['pupil']}, {$data['teacher']}, {$data['subject']})
         ");
         $new_id = $this->db->lastId();
-        return $new_id;
+        return $this->getOneLoad($new_id);
     }
 }

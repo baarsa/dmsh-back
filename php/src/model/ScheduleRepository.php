@@ -54,7 +54,7 @@ class ScheduleRepository
         ");
     }
 
-    public function updateSchedule(int $id, array $data) {
+    public function updateSchedule(int $id, array $data): array {
         //todo transactions
         $this->db->executeStatement("
         UPDATE `schedule`
@@ -69,9 +69,10 @@ class ScheduleRepository
         INSERT INTO `pupil_schedule` (`id_schedule`, `id_pupil`, `year`) 
         VALUES $values_string
         ");
+        return $this->getOneSchedule($id);
     }
 
-    public function createSchedule(array $data): int {
+    public function createSchedule(array $data): array {
         $this->db->executeStatement("
         INSERT INTO `schedule` (`name`) VALUES (\"{$data['name']}\")
         ");
@@ -83,6 +84,6 @@ class ScheduleRepository
         INSERT INTO `pupil_schedule` (`id_schedule`, `id_pupil`, `year`) 
         VALUES $values_string
         ");
-        return $new_id;
+        return $this->getOneSchedule($new_id);
     }
 }

@@ -50,7 +50,7 @@ class UserRepository
         ");
     }
 
-    public function updateUser(int $id, array $data) {
+    public function updateUser(int $id, array $data): array {
         $roles = json_encode($data['roles']);
         $id_teacher = $data['teacherId'] === null ? 'null' : $data['teacherId'];
         $this->db->executeStatement("
@@ -58,14 +58,15 @@ class UserRepository
         SET `name` = \"{$data['name']}\", `login` = \"{$data['login']}\", `password` = \"{$data['password']}\", `roles` = \"$roles\", `id_teacher` = $id_teacher
         WHERE `id` = $id
         ");
+        return $this->getOneUser($id);
     }
 
-    public function createUser(array $data): int {
+    public function createUser(array $data): array {
         $roles = json_encode($data['roles']);
         $this->db->executeStatement("
         INSERT INTO `user` (`name`, `login`, `password`, `roles`, `id_teacher`) 
         VALUES (\"{$data['name']}\", \"{$data['login']}\", \"{$data['password']}\", \"$roles\", {$data['teacherId']})
         ");
-        return $this->db->lastId();
+        return $this->getOneUser($this->db->lastId());
     }
 }

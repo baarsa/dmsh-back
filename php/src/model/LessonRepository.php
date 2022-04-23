@@ -61,7 +61,7 @@ class LessonRepository
         ");
     }
 
-    public function updateLesson(int $id, array $data) {
+    public function updateLesson(int $id, array $data): array {
         //todo transactions
         $set_values = [];
         if (isset($data['schedule'])) {
@@ -102,9 +102,10 @@ class LessonRepository
             WHERE `id_time_span` = $id
             ");
         }
+        return $this->getOneLesson($id);
     }
 
-    public function createLesson(array $data): int {
+    public function createLesson(array $data): array {
         $this->db->executeStatement("
         INSERT INTO `time_span` (`id_schedule`, `week_day`, `start`, `end`) 
         VALUES ({$data['schedule']}, {$data['weekDay']}, {$data['start']}, {$data['end']})
@@ -114,6 +115,6 @@ class LessonRepository
         INSERT INTO `lesson` (`id_time_span`, `id_lesson_taker`, `id_teacher`, `id_subject`)
         VALUES ($new_id, {$data['lessonTaker']}, {$data['teacher']}, {$data['subject']})
         ");
-        return $new_id;
+        return $this->getOneLesson($new_id);
     }
 }
