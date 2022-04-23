@@ -19,22 +19,23 @@ abstract class Controller
     public function __construct(App $app) {
         $app->get("/api/" . static::$RESOURCE_NAME . "/all", function (Request $request, Response $response) {
             $response->getBody()->write(json_encode($this->getAll()));
-            return $response;
+            return $response->withHeader('Content-Type', 'application/json');
         });
         $app->get("/api/" . static::$RESOURCE_NAME . "/{id}", function (Request $request, Response $response, $args) {
             $resource_id = (int)$args['id'];
             $response->getBody()->write(json_encode($this->getOne($resource_id)));
-            return $response;
+            return $response->withHeader('Content-Type', 'application/json');
         });
         $app->post("/api/" . static::$RESOURCE_NAME, function (Request $request, Response $response) {
-            $new_id = $this->create($request->getParsedBody());
-            $response->getBody()->write(strval($new_id));
-            return $response;
+            $new_object = $this->create($request->getParsedBody());
+            $response->getBody()->write(json_encode($new_object));
+            return $response->withHeader('Content-Type', 'application/json');
         });
         $app->post("/api/" . static::$RESOURCE_NAME . "/{id}", function (Request $request, Response $response, $args) {
             $resource_id = (int)$args['id'];
-            $this->update($resource_id, $request->getParsedBody());
-            return $response;
+            $updated_object = $this->update($resource_id, $request->getParsedBody());
+            $response->getBody()->write(json_encode($updated_object));
+            return $response->withHeader('Content-Type', 'application/json');
         });
         $app->delete("/api/" . static::$RESOURCE_NAME . "/{id}", function (Request $request, Response $response, $args) {
             $resource_id = (int)$args['id'];

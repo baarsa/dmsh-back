@@ -8,7 +8,6 @@ class AuthManager
     private Database $db;
 
     public function auth() {
-        // get user by session
         if (array_key_exists(self::$SESSION_ID_KEY, $_SESSION)) {
             $id = $_SESSION[self::$SESSION_ID_KEY];
             $result = $this->db->select("SELECT * FROM `user` WHERE `id` = $id");

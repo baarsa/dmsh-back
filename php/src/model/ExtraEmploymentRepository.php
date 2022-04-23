@@ -57,7 +57,7 @@ class ExtraEmploymentRepository
         ");
     }
 
-    public function updateExtraEmployment(int $id, array $data) {
+    public function updateExtraEmployment(int $id, array $data): array {
         //todo transactions
         $set_values = [];
         if (isset($data['schedule'])) {
@@ -95,9 +95,10 @@ class ExtraEmploymentRepository
             WHERE `id_time_span` = $id
             ");
         }
+        return $this->getOneExtraEmployment($id);
     }
 
-    public function createExtraEmployment(array $data): int {
+    public function createExtraEmployment(array $data): array {
         $this->db->executeStatement("
         INSERT INTO `time_span` (`id_schedule`, `week_day`, `start`, `end`) 
         VALUES ({$data['schedule']}, {$data['weekDay']}, {$data['start']}, {$data['end']})
@@ -107,6 +108,6 @@ class ExtraEmploymentRepository
         INSERT INTO `out_of_school_employment` (`id_time_span`, `id_person`, `description`)
         VALUES ($new_id, {$data['person']}, \"{$data['description']}\")
         ");
-        return $new_id;
+        return $this->getOneExtraEmployment($new_id);
     }
 }
