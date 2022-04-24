@@ -80,4 +80,29 @@ class PupilRepository
         ");
         return $this->getOnePupil($new_id);
     }
+
+    public function createMultiplePupils(array $data) {
+        $values_str = implode(", ", array_map(function ($pupil) {
+            return "(\"{$pupil['name']}\")";
+        }, $data));
+        $this->db->executeStatement("
+        INSERT INTO `person` (`name`) VALUES $values_str
+        ");
+        $number_of_pupils = count($data);
+        $persons_ids = array_reverse($this->db->getIds("SELECT `id` FROM `person` ORDER BY `id` DESC LIMIT $number_of_pupils"));
+        $values_str = implode(", ", array_map(function ($pupil) {
+            return "()";
+        }, $data));
+        $this->db->executeStatement("
+        INSERT INTO `lesson_taker` () VALUES $values_str
+        ");
+        $lesson_takers_ids = array_reverse($this->db->getIds("SELECT `id` FROM `lesson_taker` ORDER BY `id` DESC LIMIT $number_of_pupils"));
+        $values_str = implode(", ", array_map(function ($pupil, $id_person, $id_lesson_taker) {
+            return "($id_person, $id_lesson_taker, {$pupil['program']}, {$pupil['specialSubject']})";
+        }, $data, $persons_ids, $lesson_takers_ids));
+        $this->db->executeStatement("
+        INSERT INTO `pupil` (`id_person`, `id_lesson_taker`, `id_program`, `id_special_subject`)
+        VALUES $values_str
+        ");
+    }
 }
