@@ -19,7 +19,7 @@ class TeacherRepository
                 $acc[$item['id']] = [
                     'id' => $item['id'],
                     'name' => $item['name'],
-                    'canAssist' => $item['can_assist'] === '1',
+                    'canAssist' => $item['can_assist'] === 1,
                     'subjects' => [$item['id_subject']],
                 ];
             } else {
@@ -42,7 +42,7 @@ class TeacherRepository
         return [
             'id' => $result[0]['id'],
             'name' => $result[0]['name'],
-            'canAssist' => $result[0]['can_assist'] === '1',
+            'canAssist' => $result[0]['can_assist'] === 1,
             'subjects' => array_map(function ($item) {
                 return $item['id_subject'];
             }, $result),
@@ -63,9 +63,10 @@ class TeacherRepository
         SET `name` = \"{$data['name']}\"
         WHERE `id` = $id
         ");
+        $can_assist = $data['canAssist'] ? 1 : 0;
         $this->db->executeStatement("
         UPDATE `teacher`
-        SET `can_assist` = {$data['canAssist']}
+        SET `can_assist` = $can_assist
         WHERE `id_person` = $id
         ");
         $this->db->executeStatement("DELETE FROM `teacher_subject` WHERE id_teacher = $id");

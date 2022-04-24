@@ -65,7 +65,7 @@ class ProgramRepository
         ];
     }
 
-    public function deleteTeacher(int $id) {
+    public function deleteProgram(int $id) {
         $this->db->executeStatement("
         DELETE FROM `program` WHERE `id` = $id
         ");

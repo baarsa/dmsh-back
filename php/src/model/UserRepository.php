@@ -63,9 +63,10 @@ class UserRepository
 
     public function createUser(array $data): array {
         $roles = json_encode($data['roles']);
+        $id_teacher = $data['teacherId'] === null ? 'null' : $data['teacherId'];
         $this->db->executeStatement("
         INSERT INTO `user` (`name`, `login`, `password`, `roles`, `id_teacher`) 
-        VALUES (\"{$data['name']}\", \"{$data['login']}\", \"{$data['password']}\", \"$roles\", {$data['teacherId']})
+        VALUES (\"{$data['name']}\", \"{$data['login']}\", \"{$data['password']}\", \"$roles\", $id_teacher)
         ");
         return $this->getOneUser($this->db->lastId());
     }
