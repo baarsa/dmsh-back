@@ -32,7 +32,7 @@ class UserController extends Controller
 
     public function update(int $id, array $data)
     {
-        $this->user->updateUser($id, $data);
+        return $this->user->updateUser($id, $data);
     }
 
     public function __construct(App $app, UserRepository $user)

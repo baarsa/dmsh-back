@@ -32,7 +32,7 @@ class PupilController extends Controller
 
     public function update(int $id, array $data)
     {
-        $this->pupil->updatePupil($id, $data);
+        return $this->pupil->updatePupil($id, $data);
     }
 
     public function __construct(App $app, PupilRepository $pupil)

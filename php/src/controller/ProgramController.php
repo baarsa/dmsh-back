@@ -32,7 +32,7 @@ class ProgramController extends Controller
 
     public function update(int $id, array $data)
     {
-        $this->programRepository->updateProgram($id, $data);
+        return $this->programRepository->updateProgram($id, $data);
     }
 
     public function __construct(App $app, ProgramRepository $programRepository)
