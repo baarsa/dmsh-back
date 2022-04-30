@@ -10,8 +10,9 @@ class Database
 
     public function __construct()
     {
+        $config = new Config();
         try {
-            $this->connection = new \mysqli(Config::$DB_HOST, Config::$DB_USERNAME, Config::$DB_PASSWORD, Config::$DB_DATABASE_NAME);
+            $this->connection = new \mysqli($config->DB_HOST, $config->DB_USERNAME, $config->DB_PASSWORD, $config->DB_DATABASE_NAME);
 
             if (mysqli_connect_errno()) {
                 throw new Exception("Не удалось подключиться к БД");
