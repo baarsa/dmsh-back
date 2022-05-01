@@ -13,6 +13,7 @@ class Database
         $config = new Config();
         try {
             $this->connection = new \mysqli($config->DB_HOST, $config->DB_USERNAME, $config->DB_PASSWORD, $config->DB_DATABASE_NAME);
+            $this->connection->set_charset("UTF8");
 
             if (mysqli_connect_errno()) {
                 throw new Exception("Не удалось подключиться к БД");
