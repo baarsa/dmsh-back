@@ -13,7 +13,8 @@ class FrontController
             $path = array_key_exists('path', $args) ? $args['path'] : '';
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($ch, CURLOPT_URL, "http://localhost:5001/$path");
+            $url = getenv("DEV") == "1" ? "http://dmsh-front:5001" : "http://localhost:5001";
+            curl_setopt($ch, CURLOPT_URL, "$url/$path");
             $front_response = curl_exec($ch);
             $response->getBody()->write($front_response);
             return $response;
