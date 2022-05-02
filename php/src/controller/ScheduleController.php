@@ -32,7 +32,7 @@ class ScheduleController extends Controller
 
     public function update(int $id, array $data)
     {
-        $this->schedule->updateSchedule($id, $data);
+        return $this->schedule->updateSchedule($id, $data);
     }
 
     public function __construct(App $app, ScheduleRepository $schedule)
