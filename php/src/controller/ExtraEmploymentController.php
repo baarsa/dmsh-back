@@ -27,7 +27,7 @@ class ExtraEmploymentController extends Controller
 
     public function delete(int $id)
     {
-        return $this->extraEmploymentRepository->deleteExtraEmployment($id);
+        $this->extraEmploymentRepository->deleteExtraEmployment($id);
     }
 
     public function update(int $id, array $data)

@@ -51,9 +51,8 @@ class ExtraEmploymentRepository
     }
 
     public function deleteExtraEmployment(int $id) {
-        // delete connections
         $this->db->executeStatement("
-        DELETE FROM `out_of_school_employment` WHERE `id` = $id
+        DELETE FROM `time_span` WHERE `id` = $id
         ");
     }
 

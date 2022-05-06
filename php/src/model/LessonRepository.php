@@ -56,9 +56,6 @@ class LessonRepository
         $this->db->executeStatement("
         DELETE FROM `time_span` WHERE `id` = $id
         ");
-        $this->db->executeStatement("
-        DELETE FROM `lesson` WHERE `id_time_span` = $id
-        ");
     }
 
     public function updateLesson(int $id, array $data): array {
