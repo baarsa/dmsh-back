@@ -12,12 +12,14 @@ class LessonRepository
 
     public function getAllLessons() {
         $result = $this->db->select("
-        SELECT ts.id, ts.id_schedule, ts.week_day, ts.start, ts.end, l.id_lesson_taker, l.id_teacher, l.id_subject 
+        SELECT ts.id, ts.id_schedule, ts.week_day, ts.start, ts.end, l.id_lesson_taker, l.id_teacher, l.id_subject,
+               lat.id_teacher assistant, lat.time_start assistance_start, lat.time_end assistance_end
         FROM `lesson` l 
         JOIN `time_span` ts ON ts.id = l.id_time_span
+        LEFT JOIN `lesson_additional_teacher` lat ON lat.id_lesson = ts.id
         ");
         return array_map(function ($item) {
-            return [
+            $lesson = [
                 'id' => $item['id'],
                 'schedule' => $item['id_schedule'],
                 'lessonTaker' => $item['id_lesson_taker'],
@@ -27,20 +29,30 @@ class LessonRepository
                 'start' => $item['start'],
                 'end' => $item['end'],
             ];
+            if ($item['assistant'] !== null) {
+                $lesson["assistance"] = [
+                    'teacher' => $item['assistant'],
+                    'start' => $item['assistance_start'],
+                    'end' => $item['assistance_end'],
+                ];
+            }
+            return $lesson;
         }, $result);
     }
 
     public function getOneLesson(int $id) {
         $result = $this->db->select("
-        SELECT ts.id, ts.id_schedule, ts.week_day, ts.start, ts.end, l.id_lesson_taker, l.id_teacher, l.id_subject 
+        SELECT ts.id, ts.id_schedule, ts.week_day, ts.start, ts.end, l.id_lesson_taker, l.id_teacher, l.id_subject,
+               lat.id_teacher assistant, lat.time_start assistance_start, lat.time_end assistance_end
         FROM `lesson` l 
         JOIN `time_span` ts ON ts.id = l.id_time_span
+        LEFT JOIN `lesson_additional_teacher` lat ON lat.id_lesson = ts.id
         WHERE ts.id = $id
         ");
         if (count($result) < 1) {
             throw new \Exception("Объект не найден");
         }
-        return [
+        $lesson = [
             'id' => $result[0]['id'],
             'schedule' => $result[0]['id_schedule'],
             'lessonTaker' => $result[0]['id_lesson_taker'],
@@ -50,12 +62,27 @@ class LessonRepository
             'start' => $result[0]['start'],
             'end' => $result[0]['end'],
         ];
+        if ($result[0]['assistant'] !== null) {
+            $lesson["assistance"] = [
+                'teacher' => $result[0]['assistant'],
+                'start' => $result[0]['assistance_start'],
+                'end' => $result[0]['assistance_end'],
+            ];
+        }
+        return $lesson;
     }
 
     public function deleteLesson(int $id) {
         $this->db->executeStatement("
         DELETE FROM `time_span` WHERE `id` = $id
         ");
+    }
+
+    public function deleteAssistance($id_lesson) {
+        $this->db->executeStatement("
+            DELETE FROM `lesson_additional_teacher` WHERE `id_lesson` = $id_lesson
+            ");
+        return $this->getOneLesson($id_lesson);
     }
 
     public function updateLesson(int $id, array $data): array {
@@ -97,6 +124,15 @@ class LessonRepository
             UPDATE `lesson`
             SET $set_string
             WHERE `id_time_span` = $id
+            ");
+        }
+        if (isset($data['assistance'])) {
+            $this->db->executeStatement("
+            DELETE FROM `lesson_additional_teacher` WHERE `id_lesson` = $id
+            ");
+            $this->db->executeStatement("
+            INSERT INTO `lesson_additional_teacher` (`id_lesson`, `id_teacher`, `time_start`, `time_end`) 
+            VALUES ($id, {$data['assistance']['teacher']}, {$data['assistance']['start']}, {$data['assistance']['end']})
             ");
         }
         return $this->getOneLesson($id);
