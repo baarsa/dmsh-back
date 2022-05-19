@@ -27,7 +27,7 @@ class Database
     {
         try {
             $stmt = $this->executeStatement( $query , $params );
-            $result = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+            $result = $stmt->get_result()->fetch_all(MYSQLI_BOTH);
             $stmt->close();
 
             return $result;
@@ -68,5 +68,10 @@ class Database
         return array_map(function ($item) {
             return $item['id'];
         }, $result);
+    }
+
+    public function getOneValue($query) {
+        $result = $this->select($query);
+        return $result[0][0];
     }
 }

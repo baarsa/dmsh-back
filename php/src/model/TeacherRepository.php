@@ -56,6 +56,40 @@ class TeacherRepository
         ");
     }
 
+    public function createMultipleTeachers(array $data) {
+        $values_str = implode(", ", array_map(function ($teacher) {
+            return "(\"{$teacher['name']}\")";
+        }, $data));
+        $this->db->executeStatement("
+        INSERT INTO `person` (`name`) VALUES $values_str
+        ");
+        $number_of_teachers = count($data);
+        $persons_ids = array_reverse($this->db->getIds("SELECT `id` FROM `person` ORDER BY `id` DESC LIMIT $number_of_teachers"));
+        $values_str = implode(", ", array_map(function ($id) {
+            return "($id)";
+        }, $persons_ids));
+        $this->db->executeStatement("
+        INSERT INTO `teacher` (`id_person`)
+        VALUES $values_str
+        ");
+        $teacher_subject_rows = [];
+        foreach ($data as $index => $item) {
+            foreach ($item['subjects'] as $id_subject) {
+                $teacher_subject_rows[] = [
+                    "id_teacher" => $persons_ids[$index],
+                    "id_subject" => $id_subject,
+                ];
+            }
+        }
+        $values_str = implode(", ", array_map(function ($row) {
+            return "({$row["id_teacher"]}, {$row["id_subject"]})";
+        }, $teacher_subject_rows));
+        $this->db->executeStatement("
+        INSERT INTO `teacher_subject` (`id_teacher`, `id_subject`)
+        VALUES $values_str
+        ");
+    }
+
     public function updateTeacher(int $id, array $data): array {
         //todo transactions
         $this->db->executeStatement("

@@ -1,3 +1,4 @@
 .idea
 php/src/vendor
+php/src/uploads
 docker-compose.yml

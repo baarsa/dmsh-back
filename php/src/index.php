@@ -15,15 +15,18 @@ use Controller\TeacherController;
 use Controller\UserController;
 use Model\AuthManager;
 use Model\Database;
+use Model\DataUploader;
 use Model\ExtraEmploymentRepository;
 use Model\GroupRepository;
 use Model\LessonRepository;
 use Model\LoadRepository;
 use Model\ProgramRepository;
+use Model\PupilParser;
 use Model\PupilRepository;
 use Model\ScheduleRepository;
 use Model\SpecialityGroupRepository;
 use Model\SubjectRepository;
+use Model\TeacherParser;
 use Model\TeacherRepository;
 use Model\UserRepository;
 use Slim\Factory\AppFactory;
@@ -31,10 +34,16 @@ use Slim\Factory\AppFactory;
 require __DIR__ . '/vendor/autoload.php';
 
 session_start();
-
+const UPLOAD_DIR = __DIR__ . '/uploads';
+if (!file_exists(UPLOAD_DIR)) {
+    mkdir(UPLOAD_DIR);
+}
 $app = AppFactory::create();
 $app->addBodyParsingMiddleware();
 $app->addErrorMiddleware(false, false, false);
+$app->options('/{routes:.+}', function ($request, $response, $args) {
+    return $response;
+});
 $app->add(function ($request, $handler) {
     $response = $handler->handle($request);
     return $response
@@ -45,14 +54,15 @@ $app->add(function ($request, $handler) {
 });
 
 $db = new Database();
+$uploader = new DataUploader();
 
-$teacherController = new TeacherController($app, new TeacherRepository($db));
+$teacherController = new TeacherController($app, new TeacherRepository($db), $uploader, new TeacherParser($db));
 $extraEmploymentController = new ExtraEmploymentController($app, new ExtraEmploymentRepository($db));
 $groupController = new GroupController($app, new GroupRepository($db));
 $lessonController = new LessonController($app, new LessonRepository($db));
 $loadController = new LoadController($app, new LoadRepository($db));
 $programController = new ProgramController($app, new ProgramRepository($db));
-$pupilController = new PupilController($app, new PupilRepository($db));
+$pupilController = new PupilController($app, new PupilRepository($db), $uploader, new PupilParser($db));
 $scheduleController = new ScheduleController($app, new ScheduleRepository($db));
 $specialityGroupController = new SpecialityGroupController($app, new SpecialityGroupRepository($db));
 $subjectController = new SubjectController($app, new SubjectRepository($db));
