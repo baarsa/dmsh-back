@@ -50,9 +50,8 @@ class TeacherRepository
     }
 
     public function deleteTeacher(int $id) {
-        // todo delete connections
         $this->db->executeStatement("
-        DELETE FROM `teacher` WHERE `id` = $id
+        DELETE FROM `person` WHERE `id` = $id
         ");
     }
 
