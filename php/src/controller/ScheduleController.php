@@ -3,6 +3,8 @@
 namespace Controller;
 
 use Model\ScheduleRepository;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\App;
 
 class ScheduleController extends Controller
@@ -35,8 +37,19 @@ class ScheduleController extends Controller
         return $this->schedule->updateSchedule($id, $data);
     }
 
+    public function copy(int $id, string $name, bool $next_year)
+    {
+        return $this->schedule->copySchedule($id, $name, $next_year);
+    }
+
     public function __construct(App $app, ScheduleRepository $schedule)
     {
+        $app->post("/api/" . static::$RESOURCE_NAME . "/copy", function (Request $request, Response $response) {
+            ['id' => $id, 'name' => $name, 'nextYear' => $next_year] = $request->getParsedBody();
+            $new_schedule = $this->copy($id, $name, $next_year);
+            $response->getBody()->write(json_encode($new_schedule));
+            return $response->withHeader('Content-Type', 'application/json');
+        });
         parent::__construct($app);
         $this->schedule = $schedule;
     }
